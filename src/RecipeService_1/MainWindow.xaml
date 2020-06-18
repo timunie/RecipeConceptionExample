@@ -5,12 +5,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:RecipeService_1"
     xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:model="clr-namespace:RecipeService_1.Model"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
     Width="420"
     Height="620"
     mc:Ignorable="d">
-
+    <mah:MetroWindow.DataContext>
+        <model:ViewModel />
+    </mah:MetroWindow.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -20,94 +23,28 @@
         <TabControl Grid.Row="1">
             <TabItem Header="New recipe">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <DataGrid x:Name="DataGridRecieps" ItemsSource="{Binding Recieps}" AutoGenerateColumns="False" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding ID}" />
+                            <DataGridTextColumn Header="Text" Binding="{Binding Description}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
 
-                    <UniformGrid Grid.Row="0" Columns="1">
-                        <Border
-                            Margin="0,2,4,2"
-                            Background="DarkGray"
-                            BorderBrush="Gainsboro"
-                            BorderThickness="1">
-                            <TextBlock HorizontalAlignment="Center" Text="Creation recipes" />
-                        </Border>
-                    </UniformGrid>
-
-                    <UniformGrid Grid.Row="1" Columns="2">
-                        <TextBlock Margin="0,2,4,2" Text="Number" />
-                        <TextBlock Margin="4,2,0,2" Text="Description" />
-                    </UniformGrid>
-
-                    <UniformGrid Grid.Row="2" Columns="2">
-                        <Border
-                            Margin="0,2,4,2"
-                            BorderBrush="Gainsboro"
-                            BorderThickness="1">
-                            <TextBox />
-                        </Border>
-
-                        <Border
-                            Margin="4,2,0,2"
-                            BorderBrush="Gainsboro"
-                            BorderThickness="1">
-                            <TextBox />
-                        </Border>
-                    </UniformGrid>
-
-                    <UniformGrid Grid.Row="3" Columns="2">
-                        <Button Margin="0,2,4,2" Content="Create" />
-                        <Button Margin="4,2,0,2" Content="Delete" />
-                    </UniformGrid>
-
-                    <UniformGrid Grid.Row="4" Columns="1">
-                        <TextBlock />
-                    </UniformGrid>
-
-                    <UniformGrid Grid.Row="5" Columns="1">
-                        <Border
-                            Margin="0,2,4,2"
-                            Background="DarkGray"
-                            BorderBrush="Gainsboro"
-                            BorderThickness="1">
-                            <TextBlock HorizontalAlignment="Center" Text="Copying recipes" />
-                        </Border>
-                    </UniformGrid>
-
-                    <UniformGrid Grid.Row="6" Columns="2">
-                        <TextBlock Margin="0,2,4,2" Text="from recipe number" />
-                        <TextBlock Margin="4,2,0,2" Text="to recipe number" />
-                    </UniformGrid>
-
-                    <UniformGrid Grid.Row="7" Columns="2">
-                        <Border
-                            Margin="0,2,4,2"
-                            BorderBrush="Gainsboro"
-                            BorderThickness="1">
-                            <TextBox />
-                        </Border>
-
-                        <Border
-                            Margin="4,2,0,2"
-                            BorderBrush="Gainsboro"
-                            BorderThickness="1">
-                            <TextBox />
-                        </Border>
-                    </UniformGrid>
-
-                    <UniformGrid Grid.Row="8" Columns="1">
-                        <Button Margin="0,2,4,2" Content="Make a copy" />
-
-                    </UniformGrid>
-
+                    <StackPanel Grid.Column="1" DataContext="{Binding ElementName=DataGridRecieps, Path=SelectedItem}"
+                                d:DataContext="{d:DesignInstance model:Reciep}">
+                        <mah:MetroHeader Header="ID">
+                            <TextBox Text="{Binding ID}" IsReadOnly="True" />
+                        </mah:MetroHeader>
+                        <mah:MetroHeader Header="Description">
+                            <TextBox Text="{Binding Description}" />
+                        </mah:MetroHeader>
+                        <Button Content="Save" Command="{Binding SaveCommand}" />
+                    </StackPanel>
+                    
                 </Grid>
             </TabItem>
 
